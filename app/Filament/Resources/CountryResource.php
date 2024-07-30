@@ -24,6 +24,7 @@ class CountryResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
                     ->required(),
@@ -37,6 +38,13 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
+
+
+                Tables\Columns\TextColumn::make('id')
+                    
+                    ->label('ID')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->label('Name'),

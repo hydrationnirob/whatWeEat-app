@@ -76,8 +76,9 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create( Request $request)
     {
+        
         
     }
 
@@ -87,6 +88,21 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
+
+            $request->validate([
+                'name' => 'required|string',
+                'display_name' => 'required|string',
+                'bar_code' => 'required|string',
+                'description' => 'required|string',
+                'price' => 'required|string',
+                'image_url' => 'required|string',
+                'ingredients' => 'required|string',
+                'Category_id' => 'required|integer',
+                'country_id' => 'required|integer',
+                'brand_id' => 'required|integer',
+                
+            ]);
+
             $product = new Product();
             $product->name = $request->name;
             $product->display_name = $request->display_name;
@@ -95,18 +111,31 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->image_url = $request->image_url;
             $product->ingredients = $request->ingredients;
+            $product->Category_id = $request->Category_id;
+           
             $product->country_id = $request->country_id;
             $product->brand_id = $request->brand_id;
+
+            //if bar code is already in the database 
+
+            $product = Product::where('bar_code', $request->bar_code)->first();
+
+            if ($product) {
+                return response()->json(['message' => 'Product already exists'], 409);
+            }
+
             $product->save();
-    
+
             return response()->json([
                 'message' => 'Product created successfully',
-                'product' => $product,
+                'product' => $request->all(),
             ]);
     
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+
+
     }
 
     /**
@@ -114,7 +143,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-         //show only specific product by Category_id
+        
 
         try {
             $products = Product::with([
@@ -203,4 +232,8 @@ class ProductController extends Controller
     {
         //
     }
+
+
+
+
 }

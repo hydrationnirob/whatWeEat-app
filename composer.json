@@ -9,7 +9,7 @@
         "filament/filament": "^3.2.0",
         "filament/forms": "^3.2",
         "laravel/framework": "^11.9",
-        "laravel/passport": "*",
+        "laravel/passport": "^12.2",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9"
     },

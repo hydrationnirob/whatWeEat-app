@@ -82,30 +82,43 @@ class ProductResource extends Resource
                
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
-
-
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('display_name')
-                    ->label('Display Name')
-                    ->searchable()
-                    ->sortable(),
+
 
                 Tables\Columns\TextColumn::make('bar_code')
                     ->label('Bar Code')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('image_url')
-                    ->label('Image URL'),
-                Tables\Columns\TextColumn::make('ingredients')
-                    ->label('Ingredients')
-                    ->searchable(),
+
+               
+                Tables\Columns\TextColumn::make('category_id')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('brand_id')
+                    ->label('Brand')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('country_id')
+                    ->label('Country')
+                    ->searchable()
+                    ->sortable(),
+
+                
+
+
+
+                    
                 
 
                     
