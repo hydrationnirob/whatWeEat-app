@@ -21,14 +21,20 @@ class AuthController extends Controller
                 $token = $user->createToken('authToken')->accessToken;
 
                 return response()->json([
+                    'message' => 'Login Success',
                     'user' => $user,
                     'token' => $token
                 ], 200);
             } else {
-                return response()->json(['error' => 'Unauthenticated'], 401);
+                return response()->json([
+                    'message' => 'Invalid email or password',
+                ], 401);
             }
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Unknown Error', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'error' => 'Unknown Error', 
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -39,10 +45,14 @@ class AuthController extends Controller
         $data = $request->only('name', 'email', 'password');
         try {
             $data['password'] = bcrypt($data['password']);
+            if(User::where('email', $data['email'])->exists()){
+                return response()->json(['message' => 'User already exists'], 401);
+            }
             $user = User::create($data);
             $token = $user->createToken('authToken')->accessToken;
             return response()->json(
-                [   'user' => $user,
+                [   'message' => 'Registation Success',
+                    'user' => $user,
                     'token' => $token],
                  200);
         } catch (\Exception $e) {
