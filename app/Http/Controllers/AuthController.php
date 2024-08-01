@@ -20,7 +20,10 @@ class AuthController extends Controller
                 $user = Auth::user();
                 $token = $user->createToken('authToken')->accessToken;
 
-                return response()->json(['token' => $token], 200);
+                return response()->json([
+                    'user' => $user,
+                    'token' => $token
+                ], 200);
             } else {
                 return response()->json(['error' => 'Unauthenticated'], 401);
             }

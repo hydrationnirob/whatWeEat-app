@@ -9,17 +9,22 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        
         'name',
+        'slug',
         'display_name',
+        'unit_size',
+        'unit_type',
+        'Product_Category',
+        'Product_Sub_Category',
+        'Category_id',
         'bar_code',
         'description',
         'price',
         'image_url',
         'ingredients',
-        'category_id',
+        'brand_id',
         'country_id',
-        'brand_id'
     ];
 
     public function country()
@@ -41,4 +46,6 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    
 }

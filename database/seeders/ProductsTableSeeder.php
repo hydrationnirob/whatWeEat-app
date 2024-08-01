@@ -15,7 +15,12 @@ class ProductsTableSeeder extends Seeder
     {
         DB::table('products')->insert([
             'name' => 'Chocolate',
+            'slug' => 'pure chocolate cake 500g', 
             'display_name' => 'Chocolate Cake',
+            'unit_size' => '500',
+            'unit_type' => 'g',
+            'Product_Category' => 'Cake',
+             'Product_Sub_Category' => 'Chocolate',
             'bar_code' => '123456789',
             'description' => 'A delicious chocolate cake',
             'Category_id' => 1,
@@ -28,7 +33,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'Coca-Cola',
+            'slug' => 'coca-cola 320ml',
             'display_name' => 'Coca-Cola',
+            'unit_size' => '320',
+            'unit_type' => 'ml',
+            'Product_Category' => 'Beverage',
+            'Product_Sub_Category' => 'Coca-Cola',
             'bar_code' => '987654321',
             'description' => 'A refreshing Coca-Cola',
             'Category_id' => 4,
@@ -42,7 +52,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'Bambay Chips',
+            'slug' => 'bambay chips 200g',
             'display_name' => 'Bambay Chips',
+            'unit_size' => '200',
+            'unit_type' => 'g',
+            'Product_Category' => 'Snacks',
+            'Product_Sub_Category' => 'Chips',
             'bar_code' => '654654654',
             'description' => 'A delicious Bambay Chips',
             'Category_id' => 1,
@@ -56,7 +71,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'pepsi',
+            'slug' => 'pepsi 250ml',
             'display_name' => 'pepsi',
+            'unit_size' => '250',
+            'unit_type' => 'ml',
+            'Product_Category' => 'Beverage',
+            'Product_Sub_Category' => 'pepsi',
             'bar_code' => '456456456',
             'description' => 'A refreshing pepsi',
             'Category_id' => 1,
@@ -70,7 +90,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'Lays',
+            'slug' => 'lays 200g',
             'display_name' => 'Lays',
+            'unit_size' => '200',   
+            'unit_type' => 'g',
+            'Product_Category' => 'Snacks',
+            'Product_Sub_Category' => 'Chips',
             'bar_code' => '789789789',
             'description' => 'A delicious Lays',
             'Category_id' => 4,
@@ -84,7 +109,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'Sprite',
+            'slug' => 'sprite 250ml',
             'display_name' => 'Sprite',
+            'unit_size' => '250',
+            'unit_type' => 'ml',
+            'Product_Category' => 'Beverage',
+            'Product_Sub_Category' => 'Sprite',
             'bar_code' => '321321321',
             'description' => 'A refreshing Sprite',
             'Category_id' => 3,
@@ -98,7 +128,12 @@ class ProductsTableSeeder extends Seeder
 
         DB::table('products')->insert([
             'name' => 'Pringles',
+            'slug' => 'pringles 134g',
             'display_name' => 'Pringles',
+            'unit_size' => '134',
+            'unit_type' => 'g',
+            'Product_Category' => 'Snacks',
+            'Product_Sub_Category' => 'Chips',  
             'bar_code' => '987987987',
             'description' => 'A delicious Pringles',
             'Category_id' =>1,

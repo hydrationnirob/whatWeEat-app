@@ -22,7 +22,12 @@ class ProductController extends Controller
                 ->select(
                     'id',
                     'name',
+                    "slug",
                     'display_name',
+                    'unit_size',
+                    'unit_type',
+                    'Product_Category',
+                    'Product_Sub_Category',
                     'bar_code',
                     'description',
                     'price',
@@ -42,7 +47,12 @@ class ProductController extends Controller
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
+                    'slug' => $product->slug,
                     'display_name' => $product->display_name,
+                    'unit_size' => $product->unit_size,
+                    'unit_type' => $product->unit_type,
+                    'Product_Category' => $product->Product_Category,
+                    'Product_Sub_Category' => $product->Product_Sub_Category,
                     'bar_code' => $product->bar_code,
                     'description' => $product->description,
                     'price' => $product->price,
@@ -91,7 +101,12 @@ class ProductController extends Controller
 
             $request->validate([
                 'name' => 'required|string',
+                'slug' => 'required|string',
                 'display_name' => 'required|string',
+                'unit_size' => 'required|string',
+                'unit_type' => 'required|string',
+                'Product_Category' => 'required|string',
+                'Product_Sub_Category' => 'required|string',
                 'bar_code' => 'required|string',
                 'description' => 'required|string',
                 'price' => 'required|string',
@@ -105,7 +120,12 @@ class ProductController extends Controller
 
             $product = new Product();
             $product->name = $request->name;
+            $product->slug = $request->slug;
             $product->display_name = $request->display_name;
+            $product->unit_size = $request->unit_size;
+            $product->unit_type = $request->unit_type;
+            $product->Product_Category = $request->Product_Category;
+            $product->Product_Sub_Category = $request->Product_Sub_Category;
             $product->bar_code = $request->bar_code;
             $product->description = $request->description;
             $product->price = $request->price;
@@ -140,74 +160,98 @@ class ProductController extends Controller
 
     /**
      * Display the specified resource.
-     */
-    public function show(string $id)
-    {
+     */ 
+
+     public function show(string $idOrBarcode)
+{
+    try {
+        // Determine if the parameter is a barcode or a category ID
+        $isBarcode = preg_match('/^[0-9]{12,13}$/', $idOrBarcode); // Adjust regex based on your barcode format
+
+        // Log what is being searched
+        \Log::info("Searching by " . ($isBarcode ? "barcode: $idOrBarcode" : "category ID: $idOrBarcode"));
+
+        // Get products based on category ID or barcode
+        $query = Product::with([
+                'country:id,name',
+                'category:id,name',
+                'nutrition:id,product_id,calories,fat,protein,carbohydrates',
+                'brand:id,name'
+            ])
+            ->select(
+                'id',
+                'name',
+                'slug',
+                'display_name',
+                'unit_size',
+                'unit_type',
+                'Product_Category',
+                'Product_Sub_Category',
+                'bar_code',
+                'description',
+                'price',
+                'image_url',
+                'ingredients',
+                'category_id',
+                'country_id',
+                'brand_id'
+            );
+
+        
+            $query->where('bar_code', $idOrBarcode);
+        
+            $query->orWhere('category_id', $idOrBarcode);
         
 
-        try {
-            $products = Product::with([
-                    'country:id,name',
-                    'category:id,name',
-                    'nutrition:id,product_id,calories,fat,protein,carbohydrates',
-                    'brand:id,name'
-                ])
-                ->select(
-                    'id',
-                    'name',
-                    'display_name',
-                    'bar_code',
-                    'description',
-                    'price',
-                    'image_url',
-                    'ingredients',
-                    'category_id',
-                    'country_id',
-                    'brand_id'
-                )
-                ->where('category_id', $id)
-                ->get();
-    
-            if ($products->isEmpty()) {
-                return response()->json(['message' => 'No products found'], 404);
-            }
-    
-            $products = $products->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'display_name' => $product->display_name,
-                    'bar_code' => $product->bar_code,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'image_url' => $product->image_url,
-                    'ingredients' => $product->ingredients,
-                    'category_id' => $product->category_id,
-                    'category_name' => $product->category->name ?? null,
-                    'country_name' => $product->country->name ?? null,
-                    'brand_name' => $product->brand->name ?? null,
-                    'nutrition' => [
-                        'calories' => $product->nutrition->calories ?? null,
-                        'fat' => $product->nutrition->fat ?? null,
-                        'protein' => $product->nutrition->protein ?? null,
-                        'carbohydrates' => $product->nutrition->carbohydrates ?? null,
-                    ],
-                ];
-            });
-    
-            return response()->json([
-                'message' => 'Products retrieved successfully',
-                 'total' => $products->count(),
-                'products' => $products,
-            ]);
+        $products = $query->get();
 
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+        // Log the query for debugging
+        \Log::info("Executed query: " . $query->toSql());
+
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'No products found'], 404);
         }
 
-     //how to use this 
-        //http:// localhost:8000/api/products/1 
+        $products = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'display_name' => $product->display_name,
+                'unit_size' => $product->unit_size,
+                'unit_type' => $product->unit_type,
+                'Product_Category' => $product->Product_Category,
+                'Product_Sub_Category' => $product->Product_Sub_Category,
+                'bar_code' => $product->bar_code,
+                'description' => $product->description,
+                'price' => $product->price,
+                'image_url' => $product->image_url,
+                'ingredients' => $product->ingredients,
+                'category_id' => $product->category_id,
+                'category_name' => $product->category->name ?? null,
+                'country_name' => $product->country->name ?? null,
+                'brand_name' => $product->brand->name ?? null,
+                'nutrition' => [
+                    'calories' => $product->nutrition->calories ?? null,
+                    'fat' => $product->nutrition->fat ?? null,
+                    'protein' => $product->nutrition->protein ?? null,
+                    'carbohydrates' => $product->nutrition->carbohydrates ?? null,
+                ],
+            ];
+        });
+
+        return response()->json([
+            'message' => 'Products retrieved successfully',
+            'total' => $products->count(),
+            'products' => $products,
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
     }
+}
+
+
 
     /**
      * Show the form for editing the specified resource.

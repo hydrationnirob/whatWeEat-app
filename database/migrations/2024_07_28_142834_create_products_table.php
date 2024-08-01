@@ -14,7 +14,12 @@ return new class extends Migration
     Schema::create('products', function (Blueprint $table) {
         $table->integer('id')->primary()->autoIncrement();
         $table->string('name');
-        $table->string('display_name');
+        $table->string('slug');
+        $table->string('display_name')->nullable();
+        $table->string('unit_size');
+        $table->enum ('unit_type', ['g', 'ml', 'kg', 'l', 'pcs']);
+        $table->string('Product_Category');
+        $table->string('Product_Sub_Category')->nullable();
         $table->integer('Category_id');
         $table->string('bar_code');
         $table->text('description');
